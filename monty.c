@@ -16,7 +16,7 @@ int status = 0;
 
 void file_error(char *argv)
 {
-	fprintf();
+	fprintf(stderr, "Error: Can't open file %s\n", argv);
 	exit(EXIT_FAILURE);
 }
 
@@ -28,10 +28,9 @@ void file_error(char *argv)
 
 void error_usage(void)
 {
-	fprintf();
+	fprintf(stderr, "USAGE: monty file\n");
 	exit(EXIT_FAILURE);
 }
-int status = 0;
 
 /**
  * main - beginning of the code
@@ -40,8 +39,11 @@ int status = 0;
  *
  * Return: 0 on success
  */
+
 int main(int argc, char **argv)
 {
 	FILE *file;
 
+	if (argc != 2)
+		error_usage();
 }
