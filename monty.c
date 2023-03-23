@@ -1,64 +1,68 @@
-#include <stdio.h>
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
 #include "monty.h"
 
-/*global declarations*/
-int status = 0;
+monty_t monty;
 
 /**
- * file_error - prints file error message and exits
- * @argv: given by main()
+ * main- entry point
+ * @argc: args count
+ * @argv: args vector
  *
- * Return: no return value
+ * Return: EXIT_SUCCESS
  */
-
-void file_error(char *argv)
-{
-	fprintf(stderr, "Error: Can't open file %s\n", argv);
-	exit(EXIT_FAILURE);
-}
-
-/**
- * error_usage - prints usage message and exits
- *
- * Return: return nothing receive nothing
- */
-
-void error_usage(void)
-{
-	fprintf(stderr, "USAGE: monty file\n");
-	exit(EXIT_FAILURE);
-}
-
-/**
- * main - beginning of the code
- * @argv: list of arguments passed to the function
- * @argc: arguments pssed to the function
- *
- * Return: 0 on success
- */
-
 int main(int argc, char **argv)
 {
-	FILE *file;
 
-	if (argc != 2)
-		error_usage();
+	init_montyStruct();
+	open_up(argc, argv[1]);
+	read_line();
+	free_it_all();
+	return (EXIT_SUCCESS);
+}
 
-	file = fopen(argv[1], "r");
-	if (!file)
-		file_error(argv[1]);
+/**
+ *  init_montyStruct - initialise the struct
+ *
+ *
+ *
+ */
+void init_montyStruct(void)
+{
 
-	while(1)
+	monty.file = NULL;
+	monty.line = NULL;
+	monty.stack = NULL;
+	monty.line_number = 1;
+	monty.is_queue = false;
+}
+
+/**
+ * free_it_all - frees our file
+ *
+ *
+ *
+ */
+void free_it_all(void)
+{
+	fclose(monty.file);
+	free(monty.line);
+	free_build(monty.stack);
+}
+
+/**
+ * free_build - frees the stack
+ * @h: the head of stack
+ *
+ *
+ */
+void free_build(stack_t *h)
+{
+	stack_t *temp;
+	stack_t *location = h;
+
+	while (location)
 	{
-		if (status)
-			break;
-		if (*buffer == '\n')
-		{
-			line_cnt++;
-			continue;
-		}
+		temp = location;
+		location = location->next;
+		free(temp);
 	}
 }
